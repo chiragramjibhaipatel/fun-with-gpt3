@@ -1,4 +1,4 @@
-import {useState} from "@types/react";
+import {useState} from "react";
 import {Button, Card, Layout, Stack, TextField} from "@shopify/polaris";
 
 export function InputComponent() {
