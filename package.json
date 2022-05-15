@@ -11,7 +11,8 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
+    "netlify-start": "npm install && npm start && cd client && npm install --only=dev && npm install && npm run build"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
