@@ -42,7 +42,7 @@ export function InputComponent() {
                             />
                         </Stack.Item>
                         <Stack.Item>
-                            <Button onClick={handleSubmit}>Process</Button>
+                            <Button onClick={handleSubmit} disabled={newPrompt.length === 0}>Process</Button>
                         </Stack.Item>
                     </Stack>
                 </Layout.Section>
