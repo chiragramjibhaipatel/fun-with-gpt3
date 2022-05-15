@@ -32,7 +32,8 @@ export const processPromptAsync = prompt => async dispatch => {
     dispatch(toggleIsSync(true));
     console.log("Process Prompt: ", prompt);
     //TODO: make call to back end and get response
-    dispatch(setResponse(prompt));
+    const result = await axios.get("/api/process-prompt/" + prompt);
+    dispatch(setResponse(result.data));
     dispatch(toggleIsSync(false))
     return "response";
 }
