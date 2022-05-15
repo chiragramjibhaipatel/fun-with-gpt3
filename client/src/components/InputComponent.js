@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Button, Card, Layout, Stack, TextField} from "@shopify/polaris";
+import {Button, Card, Layout, Stack, TextField, SkeletonBodyText} from "@shopify/polaris";
 import {setResponse, processPromptAsync, saveResponseAsync} from "../AiSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {aiState} from "../AiSlice";
@@ -46,21 +46,30 @@ export function InputComponent() {
                         </Stack.Item>
                     </Stack>
                 </Layout.Section>
-                <Layout.Section>
-                    <Card title="Response" sectioned>
-                        <Stack alignment="trailing" distribution="trailing">
-                            <Stack.Item fill>
-                                {response}
-                            </Stack.Item>
-                            <Stack.Item>
-                                <Stack>
-                                    <Button onClick={handleReset}>Reset</Button>
-                                    <Button onClick={handleSave} primary>Add response to list</Button>
+                {
+                    response? (
+                        <Layout.Section>
+                            <Card title="Response" sectioned>
+                                <Stack alignment="trailing" distribution="trailing">
+                                    <Stack.Item fill>
+                                        {response}
+                                    </Stack.Item>
+                                    <Stack.Item>
+                                        <Stack>
+                                            <Button onClick={handleReset}>Reset</Button>
+                                            <Button onClick={handleSave} primary>Add response to list</Button>
+                                        </Stack>
+                                    </Stack.Item>
                                 </Stack>
-                            </Stack.Item>
-                        </Stack>
-                    </Card>
-                </Layout.Section>
+                            </Card>
+                        </Layout.Section>
+                    ) : (isSyncing?(
+                        <Layout.Section>
+                            <SkeletonBodyText lines={4} />
+                        </Layout.Section>
+                    ):"")
+                }
+
             </Layout>
         </Card>
     );

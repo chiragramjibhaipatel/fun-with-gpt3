@@ -1,10 +1,9 @@
-import {Card, ResourceList} from "@shopify/polaris";
+import {Card, ResourceList, EmptyState} from "@shopify/polaris";
 import {useDispatch, useSelector} from "react-redux";
 import {aiState} from "../AiSlice";
 import {useState} from "react";
 
 function renderItem(props) {
-    console.log(props)
     const {id, prompt, response} = props;
     return (
         <ResourceList.Item id={id}>
@@ -17,6 +16,8 @@ function renderItem(props) {
 export function SummaryComponent() {
     const [selectedItems, setSelectedItems] = useState([]);
 
+
+
     const resourceName = {
         singular: 'prompt',
         plural: 'prompts',
@@ -25,7 +26,6 @@ export function SummaryComponent() {
     let  items = itemsList.map((item, i) => {
         return {...item, id: i}
     })
-    console.log(items);
     const promotedBulkActions = [
         {
             content: 'Delete',
@@ -33,9 +33,21 @@ export function SummaryComponent() {
         },
     ];
 
+    const emptyStateMarkup = !items.length ? (
+                                <EmptyState
+                                    heading="there is nothing to show here, why font you try some prompt"
+                                    image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
+                                >
+                                    <p>
+                                        you can search for anything in the text box above and we will try to generate some interesting responses for you.
+                                    </p>
+                                </EmptyState>
+                            ) : undefined;
+
     return (
         <Card title="History">
             <ResourceList
+                emptyState={emptyStateMarkup}
                 resourceName={resourceName}
                 selectedItems={selectedItems}
                 onSelectionChange={setSelectedItems}
