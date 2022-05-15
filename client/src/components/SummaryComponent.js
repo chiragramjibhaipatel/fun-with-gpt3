@@ -1,37 +1,48 @@
 import {Card, ResourceList} from "@shopify/polaris";
-import {RenderItem} from "./RenderItem";
+import {useDispatch, useSelector} from "react-redux";
+import {aiState} from "../AiSlice";
+import {useState} from "react";
+
+function renderItem(props) {
+    console.log(props)
+    const {id, prompt, response} = props;
+    return (
+        <ResourceList.Item id={id}>
+            <div>{prompt}</div>
+            <div>{response}</div>
+        </ResourceList.Item>
+    );
+}
 
 export function SummaryComponent() {
-    const items = [
+    const [selectedItems, setSelectedItems] = useState([]);
+
+    const resourceName = {
+        singular: 'prompt',
+        plural: 'prompts',
+    };
+    const {isSyncing, itemsList} = useSelector(aiState);
+    let  items = itemsList.map((item, i) => {
+        return {...item, id: i}
+    })
+    console.log(items);
+    const promotedBulkActions = [
         {
-            id: 1,
-            prompt: "hello 1",
-            response: "hello response 1"
-        },
-        {
-            id: 2,
-            prompt: "hello 2",
-            response: "hello response 2"
-        }
-    ];
-    const bulkActions = [
-        {
-            content: 'Add tags',
-            onAction: () => console.log('Todo: implement bulk add tags'),
-        },
-        {
-            content: 'Remove tags',
-            onAction: () => console.log('Todo: implement bulk remove tags'),
-        },
-        {
-            content: 'Delete customers',
+            content: 'Delete',
             onAction: () => console.log('Todo: implement bulk delete'),
         },
     ];
 
     return (
         <Card title="History">
-            <ResourceList bulkActions={bulkActions} items={items} renderItem={(item) => <RenderItem item={item}/>}/>
+            <ResourceList
+                resourceName={resourceName}
+                selectedItems={selectedItems}
+                onSelectionChange={setSelectedItems}
+                promotedBulkActions={promotedBulkActions}
+                items={items}
+                renderItem={renderItem}
+            />
         </Card>
     );
 }
