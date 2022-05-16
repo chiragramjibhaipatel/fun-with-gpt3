@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 export const aiSlice = createSlice({
     name: 'ai',
-    initialState: {isSyncing: false, response: "", itemsList: [], nextId: 0},
+    initialState: {isSyncing: false, response: "", itemsList: [], nextId: 0, sortOrder: "CREATED_DESC"},
     reducers: {
         toggleIsSync: (state, action) => {
             state.isSyncing = action.payload;
@@ -15,6 +15,11 @@ export const aiSlice = createSlice({
         saveResponse: (state, action) => {
             let items = {...action.payload, id: state.nextId ++};
             state.itemsList.push(items);
+            if (state.sortOrder === "CREATED_ASC") {
+                state.itemsList.sort((a, b) => a.id - b.id)
+            } else if (state.sortOrder === "CREATED_DESC") {
+                state.itemsList.sort((a, b) => b.id - a.id)
+            }
             localStorage.setItem("ai-local-store", JSON.stringify(state.itemsList));
         },
         loadStateFromLocalStorage: (state, action) => {
@@ -38,6 +43,7 @@ export const aiSlice = createSlice({
         },
         sortItems: (state, action) => {
             const sortOrder = action.payload;
+            state.sortOrder = sortOrder;
             if (sortOrder === "CREATED_ASC") {
                 state.itemsList.sort((a, b) => a.id - b.id)
             } else if (sortOrder === "CREATED_DESC") {

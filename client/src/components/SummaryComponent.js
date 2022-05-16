@@ -16,7 +16,7 @@ function renderItem(props) {
 
 export function SummaryComponent() {
     const [selectedItems, setSelectedItems] = useState([]);
-    const [sortValue, setSortValue] = useState('CREATED_ASC');
+    const [sortValue, setSortValue] = useState('CREATED_DESC');
 
 
     const dispatch = useDispatch();
