@@ -1,4 +1,4 @@
-import {Card, ResourceList, EmptyState} from "@shopify/polaris";
+import {Card, ResourceList, EmptyState, TextStyle} from "@shopify/polaris";
 import {useDispatch, useSelector} from "react-redux";
 import {aiState, loadStateFromLocalStorage, deleteItems, sortItems} from "../AiSlice";
 import {useEffect, useState} from "react";
@@ -8,8 +8,8 @@ function renderItem(props) {
     const {id, prompt, response} = props;
     return (
         <ResourceList.Item id={id}>
-            <div>{prompt}</div>
-            <div>{response}</div>
+            <div><TextStyle variation="strong">Prompt: </TextStyle>{prompt}</div>
+            <div><TextStyle variation="strong">Response: </TextStyle>{response}</div>
         </ResourceList.Item>
     );
 }
@@ -47,7 +47,7 @@ export function SummaryComponent() {
 
     const emptyStateMarkup = !items.length ? (
                                 <EmptyState
-                                    heading="there is nothing to show here, why don't you try some prompt"
+                                    heading="There is nothing to show here, why don't you try some prompt"
                                     image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
                                 >
                                     <p>
