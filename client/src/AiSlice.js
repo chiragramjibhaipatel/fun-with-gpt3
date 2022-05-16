@@ -14,12 +14,20 @@ export const aiSlice = createSlice({
         },
         saveResponse: (state, action) => {
             state.itemsList.push(action.payload);
+            localStorage.setItem("ai-local-store", JSON.stringify(state.itemsList));
+        },
+        loadStateFromLocalStorage: (state, action) => {
+            let item = localStorage.getItem("ai-local-store");
+            console.log(item);
+            if (item) {
+                state.itemsList = JSON.parse(item);
+            }
         },
     }
 });
 
 
-export const {addAi, deleteAi, updateAi, toggleIsSync, setResponse, saveResponse} = aiSlice.actions;
+export const {addAi, deleteAi, updateAi, toggleIsSync, setResponse, saveResponse, loadStateFromLocalStorage} = aiSlice.actions;
 
 export const saveResponseAsync = newItem => async dispatch => {
     dispatch(toggleIsSync(true));

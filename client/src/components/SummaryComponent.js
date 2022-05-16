@@ -1,7 +1,8 @@
 import {Card, ResourceList, EmptyState} from "@shopify/polaris";
 import {useDispatch, useSelector} from "react-redux";
-import {aiState} from "../AiSlice";
-import {useState} from "react";
+import {aiState, loadStateFromLocalStorage} from "../AiSlice";
+import {useEffect, useState} from "react";
+
 
 function renderItem(props) {
     const {id, prompt, response} = props;
@@ -16,6 +17,12 @@ function renderItem(props) {
 export function SummaryComponent() {
     const [selectedItems, setSelectedItems] = useState([]);
 
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(loadStateFromLocalStorage());
+        return () => {
+        };
+    }, []);
 
 
     const resourceName = {

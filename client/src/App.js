@@ -7,7 +7,10 @@ import './App.css';
 import {InputComponent} from "./components/InputComponent";
 import {SummaryComponent} from "./components/SummaryComponent";
 
+
 function App() {
+
+
   return (
       <PolarisProvider i18n={translations}>
           <Provider store={store}>
