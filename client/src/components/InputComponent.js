@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Button, Card, Layout, Stack, TextField, SkeletonBodyText} from "@shopify/polaris";
+import {Button, Card, Layout, Stack, TextField, SkeletonBodyText, TextStyle} from "@shopify/polaris";
 import {setResponse, processPromptAsync, saveResponseAsync} from "../AiSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {aiState} from "../AiSlice";
@@ -42,25 +42,30 @@ export function InputComponent() {
                             />
                         </Stack.Item>
                         <Stack.Item>
-                            <Button onClick={handleSubmit} disabled={newPrompt.length === 0}>Process</Button>
+                            <Button onClick={handleSubmit} disabled={newPrompt.length === 0} loading={isSyncing}>Process</Button>
                         </Stack.Item>
                     </Stack>
                 </Layout.Section>
                 {
                     response? (
                         <Layout.Section>
-                            <Card title="Response" sectioned>
-                                <Stack alignment="trailing" distribution="trailing">
-                                    <Stack.Item fill>
-                                        {response}
+                            <Card sectioned>
+                                <Stack vertical alignment="fill" distribution="leading">
+                                    <Stack.Item>
+                                        <TextStyle variation="strong">Prompt: </TextStyle>{newPrompt}
                                     </Stack.Item>
                                     <Stack.Item>
-                                        <Stack>
+                                        <TextStyle variation="strong">Response: </TextStyle>{response}
+                                    </Stack.Item>
+                                </Stack>
+                                <Layout sectioned>
+                                    <Layout.Section>
+                                        <Stack spacing="loose" distribution="trailing" alignment="trailing">
                                             <Button onClick={handleReset}>Reset</Button>
                                             <Button onClick={handleSave} primary>Add response to list</Button>
                                         </Stack>
-                                    </Stack.Item>
-                                </Stack>
+                                    </Layout.Section>
+                                </Layout>
                             </Card>
                         </Layout.Section>
                     ) : (isSyncing?(

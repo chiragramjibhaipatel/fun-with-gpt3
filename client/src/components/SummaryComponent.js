@@ -1,6 +1,6 @@
 import {Card, ResourceList, EmptyState} from "@shopify/polaris";
 import {useDispatch, useSelector} from "react-redux";
-import {aiState, loadStateFromLocalStorage} from "../AiSlice";
+import {aiState, loadStateFromLocalStorage, deleteItems, sortItems} from "../AiSlice";
 import {useEffect, useState} from "react";
 
 
@@ -16,6 +16,8 @@ function renderItem(props) {
 
 export function SummaryComponent() {
     const [selectedItems, setSelectedItems] = useState([]);
+    const [sortValue, setSortValue] = useState('CREATED_DESC');
+
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -30,19 +32,22 @@ export function SummaryComponent() {
         plural: 'prompts',
     };
     const {isSyncing, itemsList} = useSelector(aiState);
-    let  items = itemsList.map((item, i) => {
-        return {...item, id: i}
-    })
+    let  items = itemsList;
     const promotedBulkActions = [
         {
             content: 'Delete',
-            onAction: () => console.log('Todo: implement bulk delete'),
+            onAction: () => {
+                dispatch(deleteItems(selectedItems));
+                setSelectedItems([])
+            },
         },
     ];
 
+
+
     const emptyStateMarkup = !items.length ? (
                                 <EmptyState
-                                    heading="there is nothing to show here, why font you try some prompt"
+                                    heading="there is nothing to show here, why don't you try some prompt"
                                     image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
                                 >
                                     <p>
@@ -61,6 +66,16 @@ export function SummaryComponent() {
                 promotedBulkActions={promotedBulkActions}
                 items={items}
                 renderItem={renderItem}
+                sortValue={sortValue}
+                sortOptions={[
+                    {label: 'Newest update', value: 'CREATED_DESC'},
+                    {label: 'Oldest update', value: 'CREATED_ASC'},
+                ]}
+                onSortChange={(selected) => {
+                    setSortValue(selected);
+                    console.log(`Sort option changed to ${selected}.`);
+                    dispatch(sortItems(selected));
+                }}
             />
         </Card>
     );
